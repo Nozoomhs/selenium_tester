@@ -7,10 +7,18 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
+import org.openqa.selenium.support.ui.Duration;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.*;  
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Action;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -18,14 +26,18 @@ import java.net.MalformedURLException;
 
 public class StartlapTest {
     public WebDriver driver;
+    private ConfigFileReader configFileReader= new ConfigFileReader();
+    public List<String> URLs = configFileReader.getLoadUrls();
+    
     
     @Before
     public void setup()  throws MalformedURLException  {
         ChromeOptions options = new ChromeOptions();
-        driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
+        options.addArguments("disable popup blocking");
+        driver = new RemoteWebDriver(new URL(configFileReader.getDriverPath()), options);
         driver.manage().window().maximize();
     }
-    /*
+    
     @Test
     public void Titletest() {
         MainPage mainPage = new MainPage(this.driver);
@@ -34,8 +46,60 @@ public class StartlapTest {
         Assert.assertTrue(title.contains("Startlap"));
 
     }
+ 
     
+    @Test
+    public void DropdownTest(){
+        MainPage mainPage = new MainPage(this.driver);
+        mainPage.acceptCookies();
+        mainPage.SelectCity();
+        
+    }
+    @Test
+    public void LoadTest() {
+         for (int i = 0; i < URLs.size(); i++) {
+            this.driver.get(URLs.get(i));
+        }    
+
+    }
+    @Test
+    public void HoverTest(){
+        MainPage mainPage = new MainPage(this.driver);
+        mainPage.acceptCookies();
+        mainPage.HoverandCheck();
+    }
+
+
+    @Test
+    public void testWeather() {
+        MainPage mainPage = new MainPage(this.driver);
+        mainPage.acceptCookies();
+        WeatherPage weatherPage = mainPage.clickWeather();
+        weatherPage.acceptCookies();
+        weatherPage.fillWaterRadioButton();
+    }
+
     
+    @Test
+    public void SendForm(){
+        MainPage mainPage = new MainPage(this.driver);
+        
+        mainPage.acceptCookies();
+        
+        LoginPage loginPage = mainPage.clickLogin();
+        
+        loginPage.clickEmailandFill();
+        
+        mainPage.acceptCookies();
+        
+        ProfilePage profilepage = mainPage.clickProfile();
+        
+        profilepage.sendNewsLetterForm();
+        
+        AccountPage accountpage = profilepage.clickAccount();
+        
+    }
+
     @Test
     public void testClick() {
         MainPage mainPage = new MainPage(this.driver);
@@ -63,55 +127,12 @@ public class StartlapTest {
         String bodyText = mainPage.getBodyText();
         Assert.assertTrue(bodyText.contains("mkwhimpi@gmail.com"));
         mainPage.logOut();
+        Assert.assertTrue(mainPage.isLoggedout());
 
     }
-    
-    @Test
-    public void testWeather() {
-        MainPage mainPage = new MainPage(this.driver);
-        mainPage.acceptCookies();
-        WeatherPage weatherPage = mainPage.clickWeather();
-        weatherPage.acceptCookies();
-        weatherPage.fillWaterRadioButton();
-    }
-    
-    
-    */
-   
-    @Test
-    public void ChangeUsername(){
-        MainPage mainPage = new MainPage(this.driver);
-        
-        mainPage.acceptCookies();
-        
-        LoginPage loginPage = mainPage.clickLogin();
-        
-        loginPage.clickEmailandFill();
-        
-        mainPage.acceptCookies();
-        
-        ProfilePage profilepage = mainPage.clickProfile();
-        
-        profilepage.sendNewsLetterForm();
-        /*
-        AccountPage accountpage = profilepage.clickAccount();
-        
-        accountpage.fillFirstname();
-        */
-        
-        
-    }
-    
-    /*
-    @Test
-    public void HoverTest(){
-    }
-    */
-    
 
-    
 
-    
+ 
     @After
     public void close() {
         if (driver != null) {

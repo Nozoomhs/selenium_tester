@@ -1,2 +1,4 @@
 .gradle
 build
+tests/mytest/build
+tests/mytest/.gradle

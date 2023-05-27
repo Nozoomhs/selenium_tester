@@ -10,22 +10,32 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Keys;
+import java.util.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Action;
 
 
 
 class AccountPage extends PageBase {
-    private By FirstNameBy = By.xpath("//input[@id='firstName']");
+    private By FirstNameBy = By.xpath("/html/body/div/div[2]/div/div/form/div[2]/input");
+    private By EmailBy = By.xpath("/html/body/div/div[2]/div/div/form");
+    private By EmailBy2 = By.xpath("//form[@class='form padding--3']");
+    
     private By SubmitBy = By.xpath("//button[@id='submitAction']");
-    private By sg = By.xpath("/html/body/div/div[1]/nav/ul[1]/li[2]");
+    private By iframeBy = By.xpath("/html/body/noscript[1]/text()");
+    private By LogoBy = By.xpath("//*[contains(text(),'Facebook azon')]");
     
     public AccountPage(WebDriver driver) {
         super(driver);
-        //this.driver.get("https://startlogin.hu/auth/realms/StartLogin/account?referrer=startlap-mobil&referrer_uri=https%3A%2F%2Fwww.startlap.hu%2Fauth%2Fprofile");
+        this.driver.get("https://startlogin.hu/auth/realms/StartLogin/account?referrer=startlap-mobil&referrer_uri=https%3A%2F%2Fwww.startlap.hu%2Fauth%2Fprofile");
 
     }    
     public void fillFirstname(){
-        System.out.println(this.driver.getCurrentUrl());
-        this.waitAndReturnElement(FirstNameBy).sendKeys("Bela");
+
+    
+    System.out.println(this.driver.getCurrentUrl());
+    //this.waitAndReturnElement(LogoBy);
+    this.waitAndReturnElement(EmailBy2);
     }
    
 
@@ -33,6 +43,16 @@ class AccountPage extends PageBase {
 }
 
 
+/*
+    List<WebElement> ele = this.driver.findElements(By.tagName("iframe"));
+    System.out.println("Number of frames in a page :" + ele.size());
+    for(WebElement el : ele){
+      //Returns the Id of a frame.
+        System.out.println("Frame Id :" + el.getAttribute("id"));
+      //Returns the Name of a frame.
+        System.out.println("Frame name :" + el.getAttribute("name"));
+    }
+*/
 
 
 

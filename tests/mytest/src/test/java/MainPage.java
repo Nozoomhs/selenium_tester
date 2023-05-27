@@ -1,16 +1,24 @@
 import org.junit.*;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Action;
+import java.util.concurrent.TimeUnit;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+import org.openqa.selenium.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-
+import java.util.Set;
 
 class MainPage extends PageBase {
 
@@ -27,10 +35,19 @@ class MainPage extends PageBase {
     private By LogoutBy = By.xpath("//*[@id='sso-container']/a[3]");
     private By WeatherBy = By.xpath("/html/body/div[4]/div[1]/div[2]/div/div[3]/div[1]/a[9]/span");
     private By ProfileBy = By.xpath("//a[@href='/auth/profile']");
+    private By AllBy = By.xpath("/html/body/div[4]/div[1]/div[2]/div/div[3]/div[1]/a[13]/span");
+    private By PodcastBy = By.xpath("//*[contains(text(),'Podcastok')]");
+    private By CityBy = By.xpath("//select[@id='citySelector-2']");
+    private By BudapestBy = By.xpath("//option[@value='Budapest']//parent::select[@id='citySelector-2']");
+    private By DropdownBy = By.xpath("//*[@id='column-544']/div[1]/div[1]/div/div");
+    private By SaveBy = By.xpath("//*[@id='column-544']/div[1]/div[4]/button");
+    
+    private ConfigFileReader configFileReader= new ConfigFileReader();
+    
  
     public MainPage(WebDriver driver) {
         super(driver);
-        this.driver.get("https://www.startlap.hu/");
+        this.driver.get(configFileReader.getApplicationUrl());
     }    
     
     public String getFooterText() {
@@ -42,7 +59,7 @@ class MainPage extends PageBase {
 
     }
     public void acceptCookies(){
-        this.waitAndReturnElement(CookiesBy).click();
+        this.ReturnElementifClickable(CookiesBy).click();
     }
     public void clickMenu2(){
         this.waitAndReturnElement(MenuBy2).click();
@@ -60,7 +77,7 @@ class MainPage extends PageBase {
         this.waitAndReturnElement(AllowBy).click();
     }
      public void logOut(){
-        this.waitAndReturnElement(LogoutBy).click();
+        this.ReturnElementifClickable(LogoutBy).click();
     }
     public WeatherPage clickWeather(){
         this.waitAndReturnElement(WeatherBy).click();
@@ -69,6 +86,35 @@ class MainPage extends PageBase {
     public ProfilePage clickProfile(){
         this.waitAndReturnElement(ProfileBy).click();
         return new ProfilePage(this.driver);
+    }
+    public Set<Cookie>  GetCookies(){
+        Set<Cookie> cookies = this.driver.manage().getCookies();
+        System.out.println(cookies);
+        return cookies;
+       
+    }
+     public boolean isLoggedout(){
+        WebElement login = this.waitAndReturnElement(LoginBy);
+        return login.isDisplayed();
+    }
+    public void HoverandCheck(){
+        WebElement podcast = this.ReturnElement(PodcastBy);
+        Assert.assertFalse(podcast.isDisplayed());
+        Actions actions = new Actions(driver);
+        actions.moveToElement(this.waitAndReturnElement(AllBy));
+        actions.build().perform();
+        this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        Assert.assertTrue(podcast.isDisplayed());
+        this.driver.manage().timeouts().implicitlyWait(configFileReader.getImplicitWait(), TimeUnit.SECONDS);
+        
+
+    }
+    public void SelectCity(){
+        this.waitAndReturnElement(DropdownBy).click();
+        this.waitAndReturnElement(CityBy).click();
+        this.waitAndReturnElement(BudapestBy).click();
+        this.waitAndReturnElement(SaveBy).click();
+
     }
 
 
