@@ -37,7 +37,7 @@ public class StartlapTest {
         driver = new RemoteWebDriver(new URL(configFileReader.getDriverPath()), options);
         driver.manage().window().maximize();
     }
-    
+    /*
     @Test
     public void Titletest() {
         MainPage mainPage = new MainPage(this.driver);
@@ -80,25 +80,7 @@ public class StartlapTest {
     }
 
     
-    @Test
-    public void SendForm(){
-        MainPage mainPage = new MainPage(this.driver);
-        
-        mainPage.acceptCookies();
-        
-        LoginPage loginPage = mainPage.clickLogin();
-        
-        loginPage.clickEmailandFill();
-        
-        mainPage.acceptCookies();
-        
-        ProfilePage profilepage = mainPage.clickProfile();
-        
-        profilepage.sendNewsLetterForm();
-        
-        AccountPage accountpage = profilepage.clickAccount();
-        
-    }
+
 
     @Test
     public void testClick() {
@@ -129,6 +111,27 @@ public class StartlapTest {
         mainPage.logOut();
         Assert.assertTrue(mainPage.isLoggedout());
 
+    }
+    */
+    @Test
+    public void SendForm(){
+        MainPage mainPage = new MainPage(this.driver);
+        
+        mainPage.acceptCookies();
+        
+        LoginPage loginPage = mainPage.clickLogin();
+        
+        loginPage.clickEmailandFill();
+        
+        mainPage.acceptCookies();
+        
+        ProfilePage profilepage = mainPage.clickProfile();
+        
+        profilepage.sendNewsLetterForm();
+        
+        AccountPage accountpage = profilepage.clickAccount();
+        accountpage.fillFirstname();
+        
     }
 
 

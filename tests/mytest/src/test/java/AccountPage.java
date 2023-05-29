@@ -34,25 +34,13 @@ class AccountPage extends PageBase {
 
     
     System.out.println(this.driver.getCurrentUrl());
-    //this.waitAndReturnElement(LogoBy);
-    this.waitAndReturnElement(EmailBy2);
+    this.waitAndReturnElement(LogoBy);
+    this.waitAndReturnElement(EmailBy2).sendKeys("Bela");
     }
    
 
        
 }
-
-
-/*
-    List<WebElement> ele = this.driver.findElements(By.tagName("iframe"));
-    System.out.println("Number of frames in a page :" + ele.size());
-    for(WebElement el : ele){
-      //Returns the Id of a frame.
-        System.out.println("Frame Id :" + el.getAttribute("id"));
-      //Returns the Name of a frame.
-        System.out.println("Frame name :" + el.getAttribute("name"));
-    }
-*/
 
 
 
