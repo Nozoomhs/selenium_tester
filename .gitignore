@@ -1,5 +1,3 @@
 .gradle
 build
 tests/mytest/build
-tests/mytest/.gradle
-tests/mytest/build.gradle

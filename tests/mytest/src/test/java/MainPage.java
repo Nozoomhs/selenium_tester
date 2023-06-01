@@ -74,7 +74,7 @@ class MainPage extends PageBase {
     }
     
     public void clickAllow(){
-        this.waitAndReturnElement(AllowBy).click();
+        this.ReturnElementifClickable(AllowBy).click();
     }
      public void logOut(){
         this.ReturnElementifClickable(LogoutBy).click();

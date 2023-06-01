@@ -31,8 +31,6 @@ class AccountPage extends PageBase {
 
     }    
     public void fillFirstname(){
-
-    
     System.out.println(this.driver.getCurrentUrl());
     this.waitAndReturnElement(LogoBy);
     this.waitAndReturnElement(EmailBy2).sendKeys("Bela");
